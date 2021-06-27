@@ -1,10 +1,15 @@
 require("dotenv").config()
-const exprss = require('express')
+const express = require('express')
 const connectDB = require('./config/db')
+const productsRoute = require("./routes/productsRoute")
 
 connectDB()
 
-const app = exprss()
+const app = express()
+
+app.use(express.json())
+
+app.use("/api/products",productsRoute)
 
 const PORT = process.env.PORT || 5051
 
