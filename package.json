@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node BackEnd/server.js",
     "server": "nodemon BackEnd/server.js",
-    "client":"npm start --prefix frontend",
-    "dev":"concurrently \"npm run server\" \"npm run client\"",
-    "data:import":"node Backend/seederScripet.js"
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "node Backend/seederScripet.js"
   },
   "keywords": [],
   "author": "",
