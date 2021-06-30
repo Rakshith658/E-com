@@ -1,8 +1,16 @@
 import React from 'react'
 import './styles.css'
 import { Link} from "react-router-dom"
+import { useSelector } from 'react-redux'
 
-const index = ({click}) => {
+const Index = ({click}) => {
+    const cart = useSelector(state => state.cart)
+
+    const {cartitems}=cart
+
+    const getcartcount = ()=>{
+        return cartitems.reduce((qty,item)=>Number(item.qty)+qty,0)
+    }
     return (
         <nav className="navbar">
             {/* logo */}
@@ -18,7 +26,7 @@ const index = ({click}) => {
                         <i className="fas fa-shopping-cart"></i>
                         <span>
                             cart
-                            <span className="cartlogo__bedge">0</span>
+                            <span className="cartlogo__bedge">{getcartcount()}</span>
                         </span>
                     </Link>
                 </li>
@@ -38,4 +46,4 @@ const index = ({click}) => {
     )
 }
 
-export default index
+export default Index

@@ -2,18 +2,20 @@ import React from 'react'
 import "./style.css"
 import {Link} from "react-router-dom"
 
-const index = () => {
+const index = ({products}) => {
+
+    // console.log(products);
     return (
         <div className="product">
             <img 
-                src="https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1463&q=80" 
+                src={products.imageUrl} 
                 alt="product name" 
             />
             <div className="product__info">
-                <p className="info__name">Product 1</p>
-                <p className="info__description">Note that the development build is not optimized. Note that the development build is not optimized.</p>
-                <p className="info__price">$5.5</p>
-                <Link to={`/product/${1}`} className="info__button">View</Link> 
+                <p className="info__name">{products.name}</p>
+                <p className="info__description"> {products.description}</p>
+                <p className="info__price">${products.price}</p>
+                <Link to={`/product/${products._id}`} className="info__button">View</Link> 
             </div>
         </div>
     )

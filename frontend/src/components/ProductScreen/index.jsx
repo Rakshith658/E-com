@@ -1,47 +1,67 @@
-import React from 'react'
+import React, { useEffect ,useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import './styles.css'
+import {getProductDetails} from "../../redux/action/productAction"
+import {addtoCart} from '../../redux/action/cartAction'
 
-const index = () => {
+const Index = ({match,history}) => {
+    const [qty, setqty] = useState(1)
+    const dispatch = useDispatch()
+    
+
+    const ProductDetails = useSelector(state => state.getProductDetails)
+
+    const {product,loading,error}=ProductDetails
+
+    useEffect(() => {
+        if (product && match.params.id !== product._id) {  
+            dispatch(getProductDetails(match.params.id))
+        }
+    }, [dispatch,product,match.params.id])
+    const addtoCartHandler = ()=>{
+        dispatch(addtoCart(product._id,qty))
+        history.push('/cart')
+    }
     return (
         <div className="productscreen">
-            <div className="productscreen__life">
-                <div className="left__image">
-                    <img 
-                        src="https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1463&q=80" 
-                        alt="product name"
-                    />
+            {loading ? <h2>Loading.....</h2>:error?<h3>{error}</h3>:( <>
+                    <div className="productscreen__life">
+                    <div className="left__image">
+                        <img 
+                            src={product.imageUrl} 
+                            alt={product.name}
+                        />
+                    </div>
+                    <div className="left__info">
+                        <p className="left__name">{product.name}</p>
+                        <p>Price:${product.price}</p>
+                        <p>Description :{product.description}</p>
+                    </div>
                 </div>
-                <div className="left__info">
-                    <p className="left__name">Product</p>
-                    <p>Price:$44.55</p>
-                    <p>Description : Note that the development build is not optimized. Note that the development build is not optimized.</p>
+                <div className="productscreen__right">
+                    <div className="right__info">
+                        <p>
+                            Price: <span>${product.price}</span>
+                        </p>
+                        <p>
+                            Stauts: <span>{product.countInStock>0 ?"In stock":"out stock"}</span>
+                        </p>
+                        <p>
+                            Qty
+                            <select value={qty} onChange={(e)=>setqty(e.target.value)}>
+                                {[...Array(product.countInStock).keys()].map((x)=>(
+                                    <option key={x+1} value={x+1}>{x+1}</option>
+                                ))}
+                            </select>
+                        </p>
+                        <p>
+                            <button type="button" onClick={addtoCartHandler}>Add to Cart</button>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div className="productscreen__right">
-                <div className="right__info">
-                    <p>
-                        Price: <span>$44.55</span>
-                    </p>
-                    <p>
-                        Stauts: <span>In Stock</span>
-                    </p>
-                    <p>
-                        Qty
-                        <select>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </p>
-                    <p>
-                        <button type="button">Add to Cart</button>
-                    </p>
-                </div>
-            </div>  
+            </>)}
         </div>
     )
 }
 
-export default index
+export default Index

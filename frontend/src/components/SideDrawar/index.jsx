@@ -1,8 +1,16 @@
 import React from 'react'
 import './styles.css'
 import {Link} from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const index = ({show,click}) => {
+const Index = ({show,click}) => {
+    const cart = useSelector(state => state.cart)
+
+    const {cartitems}=cart
+
+    const getcartcount = ()=>{
+        return cartitems.reduce((qty,item)=>Number(item.qty)+qty,0)
+    }
     const sideDrawerClass = ["sidedrawer"];
     if (show) {
         sideDrawerClass.push("show");
@@ -15,7 +23,7 @@ const index = ({show,click}) => {
                         <i className="fas fa-shopping-cart"></i>
                         <span>
                             cart
-                            <span className="sidedrawer__cartbedge">0</span>
+                            <span className="sidedrawer__cartbedge">{getcartcount()}</span>
                         </span>
                     </Link>
                 </li>
@@ -29,4 +37,4 @@ const index = ({show,click}) => {
     )
 }
 
-export default index
+export default Index
